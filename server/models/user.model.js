@@ -1,24 +1,70 @@
-const mongoose = require("mongoose"); // Import library to use its methods and custom functionalities to manipulate MongoDB docs
+// 1) Importing External Libraries
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const uniqueValidator = require("mongoose-unique-validator");
 
-const UserSchema = new mongoose.Schema( // Creating our schema (blueprint)
+// 2) Creating Schema for Model (blueprint)
+const UserSchema = new mongoose.Schema(
   {
-    firstName: {
+    name: {
       type: String,
-      required: [true, "First name is required"],
-      minLength: [3, "First name must at least be 3 characters long"],
+      required: [true, "Error: name is required"],
     },
-    lastName: {
+    email: {
       type: String,
-      required: [true, "Last name is required"],
-      minLength: [3, "Last name must at least be 3 characters long"],
+      unique: true,
+      required: [true, "Error: email is required"],
+      validate: {
+        validator: (val) => /^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(val),
+        message: "Please enter a valid email",
+      },
+    },
+    password: {
+      type: String,
+      required: [true, "Error: password is required"],
     },
   },
-  { timestamp: true } // This will add to our data 'createdAt' and 'updatedAt' key-value pairs everytime we create/change something
+  {
+    timestamps: true,
+  }
 );
 
-const UserModel = mongoose.model("User", UserSchema); // We define our model as a variable
+// 3) Create virtual fields
 
-module.exports = UserModel; // We export our model
+// 3.1) Create a |virtual space" to hold confirmPassword value
+UserSchema.virtual("confirmPassword")
+  .get(() => this._confirmPassword) // define getter for virtual property "confirmPassword"
+  .set((value) => (this._confirmPassword = value)); // define setter for virtual property "confirmPassword"
 
-// A Schema is the configuration object for a Mongoose model. It is how we setup our model. A SchemaType is the configuration object for an
-// individual property within our model.
+// 3.2) Compare passwords but NOT save confirmPassword to the database
+UserSchema.pre("validate", function (next) {
+  // "pre" -> before validating
+  if (this.confirmPassword !== this.password) {
+    this.invalidate(
+      "confirmPassword",
+      "Error: passwords didn't match. Please try again."
+    );
+  }
+  // if the passwords match, we can successfully continue on to the "normal" validate steps
+  next(); //
+});
+
+// 3.3) Hash password before saving to database -> no one can access to the user's real password
+UserSchema.pre("save", function (next) {
+  // "pre" -> before saving to database
+  bcrypt.hash(this.password, 10).then((hashedPassword) => {
+    this.password = hashedPassword;
+    next();
+  });
+});
+
+// 4) Apply the uniqueValidator plugin to userSchema.
+UserSchema.plugin(uniqueValidator, {
+  message: "Error: User already registered.",
+});
+
+// 5) Creating Model using Schema
+const UserModel = mongoose.model("User", UserSchema);
+
+// 6) Exporting Model
+module.exports = UserModel;

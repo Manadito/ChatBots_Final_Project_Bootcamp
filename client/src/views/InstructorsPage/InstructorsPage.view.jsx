@@ -3,10 +3,11 @@ import InstructorCards from '../../components/InstructorCards/InstructorCards.co
 import NavBar from '../../components/NavBar/NavBar.component';
 import Footer from '../../components/Footer/Footer.component';
 
-const Instructors = () => {
+const Instructors = (props) => {
+  const { setUser } = props;
   return (
     <div className="grid h-screen grid-rows-[auto,1fr,auto] bg-white">
-      <NavBar />
+      <NavBar setUser={setUser} />
       <InstructorCards />
       <Footer />
     </div>

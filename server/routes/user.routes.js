@@ -1,22 +1,24 @@
-// We import the controller methods from our controllers folder and the Express Third-party Library
+// 1) Importing External Libraries
+const express = require("express");
+
+// 2) Importing Controller Methods
 const {
-  getAllUsers,
-  getOneUserById,
-  deleteOneUserById,
-  createNewUser,
+  register,
+  login,
+  logout,
+  findAllUsers,
   deleteAllUsers,
-} = require("..//controllers/user.controller"); // We destructure this object literal to obtain createNewUser
-const express = require("express"); // This imports the express library
+} = require("../controllers/user.controller");
 
-// We create a router instance
-const UserRouter = express.Router(); // This is a class used to create modular, mountable route handlers
+// 3) Create Router Instance
+const UserRouter = express.Router();
 
-// We link routes with the particular controller methods (from the controllers we create in controllers.js)
-UserRouter.get("/", getAllUsers); // We can reduce "/api/users" to "/"
-UserRouter.get("/:id", getOneUserById);
-UserRouter.post("/", createNewUser);
-UserRouter.delete("/:id", deleteOneUserById); // Remember to always use the correct verb
+// 4) Link Routes with Controller Methods
+UserRouter.post("/register", register);
+UserRouter.post("/login", login);
+UserRouter.get("/logout", logout);
+UserRouter.get("/", findAllUsers);
 UserRouter.delete("/", deleteAllUsers);
 
-// We export the Router method we have just created
+// 5) Exporting Router
 module.exports = UserRouter;

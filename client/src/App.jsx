@@ -1,20 +1,83 @@
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import LandingPage from './views/LandingPage/LandingPage.view';
 import ClassroomPage from './views/ClassroomPage/ClassroomPage.view';
 import InstructorsPage from './views/InstructorsPage/InstructorsPage.view';
+import LogRegPage from './views/LogRegPage/LogRegPage.view';
+
+// **************************************************************************
+// A) AUXILIARY COMPONENT
+// **************************************************************************
+const ProtectedRoute = (props) => {
+  // Variables from Props
+  const { user, redirectPath = '/', children } = props;
+
+  // II) JSX
+  return <>{!user ? <Navigate to={redirectPath} replace /> : children}</>;
+};
+
+const PublicRoute = (props) => {
+  // --------------------------------------------------
+  // I) HOOKS AND VARIABLES
+  // --------------------------------------------------
+
+  // Variables
+  const { user, redirectPath = '/', children } = props;
+
+  // --------------------------------------------------
+  // II) JSX
+  // --------------------------------------------------
+  return <>{user ? <Navigate to={redirectPath} replace /> : children}</>;
+};
+
+// **************************************************************************
+// B) MAIN COMPONENT
+// **
 
 function App() {
+  // --------------------------------------------------
+  // I) HOOKS AND VARIABLES
+  // --------------------------------------------------
+
+  // Variables
+  const userDetails = JSON.parse(localStorage.getItem('user'));
+  const userInfo = userDetails ? userDetails : null;
+  // State Hooks
+  const [user, setUser] = useState(userInfo);
+
+  // --------------------------------------------------
+  // II) JSX
+  // --------------------------------------------------
+
   return (
     <div>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/instructors" element={<InstructorsPage />} />
-        <Route path="/classroom" element={<ClassroomPage />} />
-        {/*<Route
-        path="/library/:currentBookIndex"
-        element={<ReadPage currentBookIndex={currentBookIndex} />}
-      />*/}
+        <Route
+          path="/instructors"
+          element={
+            <ProtectedRoute user={user}>
+              <InstructorsPage setUser={setUser} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/classroom"
+          element={
+            <ProtectedRoute user={user}>
+              <ClassroomPage setUser={setUser} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute user={user}>
+              <LogRegPage setUser={setUser} />
+            </PublicRoute>
+          }
+        />
       </Routes>
     </div>
   );

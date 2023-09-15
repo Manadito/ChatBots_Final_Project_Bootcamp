@@ -2,18 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Imported Fonts */
+
+@font-face {
+  font-family: 'Round_Bold';
+  src: url('./assets/fonts/Round_Bold.ttf');
+}
+
+@font-face {
+  font-family: 'Round_Italic';
+  src: url('./assets/fonts/Round_Italic.ttf');
+}
+
+@font-face {
+  font-family: 'Round_Regular';
+  src: url('./assets/fonts/Round_Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Roundo_Regular';
+  src: url('./assets/fonts/Roundo_Regular.ttf');
+}
+
+@font-face {
+  font-family: 'FuturetteEx';
+  src: url('./assets/fonts/FuturetteEx.otf');
+}
+
+@font-face {
+  font-family: 'FuturetteExlo';
+  src: url('./assets/fonts/FuturetteExlo.otf');
+}
+
 /* Adding custom @layer utilities */
 @layer utilities {
   .box::before {
-    background: conic-gradient(#04b0ee 20deg, transparent 120deg);
-    @apply absolute left-[-60%] top-[-30%] h-[500px] w-[500px];
+    background: conic-gradient(#da3429 20deg, transparent 120deg);
+    @apply absolute left-[-50%] top-[-50%] h-[200%] w-[200%];
     content: '';
     @apply animate-fullSpin;
   }
   .box::after {
-    background: white;
-    @apply absolute left-[3%] top-[3%] h-[94%] w-[94%];
+    background: rgb(229, 175, 165) url('/img/Einie_Instructor.png');
+    @apply absolute left-[3%]
+      top-[2%] h-[96%] w-[94%];
     content: '';
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
   }
 }
 

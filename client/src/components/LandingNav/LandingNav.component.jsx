@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const LandingNav = () => {
   return (
     <div>
-      <nav className=" bg-cyan-400 py-5">
+      <nav className=" border-b-2 border-cyan-500 bg-cyan-300 py-5">
         <div className="container mx-auto">
           <div>
             <ul className="flex items-center justify-evenly space-x-4">
@@ -17,14 +17,18 @@ const LandingNav = () => {
                   />
                 </Link>
 
-                <Link to="/" className=" font-roundbold text-5xl text-white">
-                  Timestructors
+                <Link to="/">
+                  <img
+                    className="mb-2 w-[500px]"
+                    src="/img/Timestructors_Logo_Text.svg"
+                    alt="Timestructors Logo Text"
+                  />
                 </Link>
               </li>
-              <li className="nav-item transform font-serif font-medium transition-transform hover:scale-110 hover:font-bold">
+              <li className="font-medium hover:font-bold">
                 <Link
                   to="/register"
-                  className=" font-roundo nav-link active font-bold"
+                  className="font-roundo text-lg font-bold text-slate-900 hover:font-bold hover:text-white"
                 >
                   Get started
                 </Link>

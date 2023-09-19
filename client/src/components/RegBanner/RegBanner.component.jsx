@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const RegBanner = () => {
   return (
     <div>
-      <nav className=" bg-cyan-400 py-5">
+      <nav className="border-b-2 border-cyan-500 bg-cyan-300 py-5 ">
         <div className="container mx-auto">
           <div>
             <ul className="flex items-center justify-evenly space-x-4">
@@ -17,8 +17,12 @@ const RegBanner = () => {
                   />
                 </Link>
 
-                <Link to="/" className=" font-roundbold text-5xl text-white">
-                  Timestructors
+                <Link to="/">
+                  <img
+                    className="mb-2 w-[500px]"
+                    src="/img/Timestructors_Logo_Text.svg"
+                    alt="Timestructors Logo Text"
+                  />
                 </Link>
               </li>
             </ul>

@@ -5,7 +5,13 @@ import Footer from '../../components/Footer/Footer.component';
 
 const LandingPage = () => {
   return (
-    <div className="grid h-screen grid-rows-[auto,1fr,auto] bg-white">
+    <div
+      className="grid h-screen grid-rows-[auto,1fr,auto] bg-repeat"
+      style={{
+        backgroundImage: "url('/img/BackgroundTilesLanding.jpg')",
+        backgroundSize: '700px 700px',
+      }}
+    >
       <LandingNav />
       <LandingContent />
       <Footer />

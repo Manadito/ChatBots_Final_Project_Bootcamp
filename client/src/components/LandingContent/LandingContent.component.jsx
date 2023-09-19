@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const LandingContent = () => {
   return (
@@ -16,12 +17,16 @@ const LandingContent = () => {
             </h1>
           </div>
           <div className="grid grid-rows-2">
-            <button className="m-auto mb-4 block w-6/12 rounded-lg bg-cyan-400 pb-2 pl-10 pr-10 pt-2 font-bold text-white hover:bg-cyan-300">
-              START THE MACHINE
-            </button>
-            <button className="m-auto block w-6/12 rounded-lg bg-cyan-400 pb-2 pl-10 pr-10 pt-2 font-bold text-white hover:bg-cyan-300">
-              I HAVE TRAVELLED IN TIME
-            </button>
+            <Link to="/register">
+              <button className="buttons shadows m-auto mb-6 block w-6/12 rounded-lg bg-cyan-400 pb-2 pl-10 pr-10 pt-2 font-bold text-white hover:bg-cyan-300 active:translate-y-1 active:bg-cyan-300">
+                START THE MACHINE
+              </button>
+            </Link>
+            <Link to="/login">
+              <button className="buttons shadows m-auto block w-6/12 rounded-lg bg-cyan-400 pb-2 pl-10 pr-10 pt-2 font-bold text-white hover:bg-cyan-300 active:translate-y-1 active:bg-cyan-300">
+                I HAVE TRAVELLED IN TIME
+              </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -229,9 +229,6 @@ const UserForm = (props) => {
           </button>
         </div>
       </form>
-      <p className="text-center text-xs text-gray-500">
-        &copy;2023 Company. All rights reserved.
-      </p>
     </div>
   );
 };

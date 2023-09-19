@@ -4,7 +4,8 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import LandingPage from './views/LandingPage/LandingPage.view';
 import ClassroomPage from './views/ClassroomPage/ClassroomPage.view';
 import InstructorsPage from './views/InstructorsPage/InstructorsPage.view';
-import LogRegPage from './views/LogRegPage/LogRegPage.view';
+import LoginPage from './views/LogRegPage/LoginPage.view';
+import SignUpPage from './views/LogRegPage/SignUpPage.view';
 
 // **************************************************************************
 // A) AUXILIARY COMPONENT
@@ -58,7 +59,7 @@ function App() {
           path="/instructors"
           element={
             <ProtectedRoute user={user}>
-              <InstructorsPage setUser={setUser} />
+              <InstructorsPage setUser={setUser} user={user} />
             </ProtectedRoute>
           }
         />
@@ -66,7 +67,7 @@ function App() {
           path="/classroom"
           element={
             <ProtectedRoute user={user}>
-              <ClassroomPage setUser={setUser} />
+              <ClassroomPage setUser={setUser} user={user} />
             </ProtectedRoute>
           }
         />
@@ -74,7 +75,15 @@ function App() {
           path="/register"
           element={
             <PublicRoute user={user}>
-              <LogRegPage setUser={setUser} />
+              <SignUpPage setUser={setUser} />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute user={user}>
+              <LoginPage setUser={setUser} />
             </PublicRoute>
           }
         />

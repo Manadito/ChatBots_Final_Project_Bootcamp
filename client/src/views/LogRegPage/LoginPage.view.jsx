@@ -4,7 +4,7 @@ import UserForm from '../../components/UserForm/UserForm.component';
 import Footer from '../../components/Footer/Footer.component';
 import RegBanner from '../../components/RegBanner/RegBanner.component';
 
-const LogRegPage = (props) => {
+const LoginPage = (props) => {
   // --------------------------------------------------
   // I) HOOKS AND VARIABLES
   // --------------------------------------------------
@@ -16,17 +16,21 @@ const LogRegPage = (props) => {
   // II) JSX
   // --------------------------------------------------
   return (
-    <div className="grid h-screen grid-rows-[auto,1fr,auto]">
+    <div
+      className="grid h-screen grid-rows-[auto,1fr,auto] bg-repeat"
+      style={{
+        backgroundImage: "url('/img/BackgroundTilesLoginReg.jpg')",
+        backgroundSize: '700px 700px',
+      }}
+    >
       <div>
         <RegBanner />
       </div>
-      <div className="grid grid-cols-2 content-center justify-items-center">
-        <div className="">
-          <UserForm formType={'register'} setUser={setUser} />
-        </div>
-
-        <div className="">
-          <UserForm formType={'login'} setUser={setUser} />
+      <div className="grid content-center justify-items-center">
+        <div>
+          <div className="">
+            <UserForm formType={'login'} setUser={setUser} />
+          </div>
         </div>
       </div>
       <div>
@@ -36,4 +40,4 @@ const LogRegPage = (props) => {
   );
 };
 
-export default LogRegPage;
+export default LoginPage;

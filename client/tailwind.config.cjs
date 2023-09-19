@@ -16,9 +16,14 @@ module.exports = {
         150: 'scale(1.5)',
       },
       backgroundImage: {
-        card: "url('/img/Stevie_Card.jpg')",
+        classroomZero: "url('/img/ClassroomZero.jpg')",
         classroomOne: "url('/img/ClassroomOne.jpg')",
         classroomTwo: "url('/img/ClassroomTwo.jpg')",
+        classroomThree: "url('/img/ClassroomThree.jpg')",
+        classroomFour: "url('/img/ClassroomFour.jpg')",
+        leftDoor: "url('/img/LeftDoor.png')",
+        rightDoor: "url('/img/RightDoor.png')",
+        rotatingSwitch: "url('/img/RotatingSwitch.png')",
       },
       keyframes: {
         fullSpin: {

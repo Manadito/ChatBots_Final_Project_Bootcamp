@@ -6,7 +6,11 @@ const LandingContent = () => {
     <div>
       <div className="grid grid-cols-2 items-center pl-32 pr-32">
         <div className="mt-10 flex items-center justify-center">
-          <img className="w-[500px]" src="/img/Time_Machine_Cover.png" alt="" />{' '}
+          <img
+            className="lg:w-[350px] xl:w-[350px] 2xl:w-[500px]"
+            src="/img/Time_Machine_Cover.png"
+            alt=""
+          />{' '}
         </div>
 
         <div>

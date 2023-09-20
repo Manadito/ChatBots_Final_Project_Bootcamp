@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 require("dotenv").config();
 const OpenAI = require("openai");
 
@@ -12,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 // Move CORS up
 const corsOptions = {
   origin: "http://localhost:5173",
-  methods: "GET, POST, PUT, DELETE",
+  methods: "GET, POST, PUT, PATCH, DELETE",
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -20,7 +21,7 @@ app.use(cors(corsOptions));
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // This is also the default, can be omitted
 });
-console.log("API Key:", process.env.OPENAI_API_KEY);
+//console.log("API Key:", process.env.OPENAI_API_KEY);
 
 app.post("/generate-text", async (req, res) => {
   try {
@@ -63,10 +64,10 @@ app.post("/generate-text", async (req, res) => {
       ],
     });
     console.log("GPT-3 Full Response:", JSON.stringify(gpt3Response, null, 2));
-    console.log(
-      "Sending to client:",
-      JSON.stringify(gpt3Response.data, null, 2)
-    );
+    //console.log(
+    //  "Sending to client:",
+    //  JSON.stringify(gpt3Response.data, null, 2)
+    // );
     res.json(gpt3Response);
   } catch (err) {
     console.error("Error:", err);

@@ -3,14 +3,22 @@ import React, { createContext, useContext, useState } from 'react';
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  // This will provide state variables throughout the app (to the children)
-  // We can add the state variable we will need, here
   const [instructor, setInstructor] = useState(null);
+  const [imgs, setImgs] = useState();
+
+  const resetState = () => {
+    setInstructor(null);
+    setImgs(undefined);
+  };
+
   return (
     <AppContext.Provider
       value={{
         instructor,
         setInstructor,
+        imgs,
+        setImgs,
+        resetState, // include the reset function in the value passed to the provider
       }}
     >
       {children}

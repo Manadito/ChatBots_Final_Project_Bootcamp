@@ -52,6 +52,7 @@ module.exports = {
                   _id: user._id,
                   name: user.name,
                   email: user.email,
+                  profileImage: user.profileImage,
                 };
                 console.log("userInfo: ", userInfo);
                 const userToken = jwt.sign(userInfo, process.env.JWT_SECRET);
@@ -107,5 +108,24 @@ module.exports = {
       .catch((err) =>
         res.status(500).json({ message: "Something went wrong", error: err })
       );
+  },
+
+  // Add this to your controller
+  updateImage: (req, res) => {
+    console.log("Request Body:", req.body);
+    console.log("Inside updateImage");
+    const { id } = req.params;
+    console.log("Received ID:", id);
+    const newBase64Image = req.body.profileImage;
+    UserModel.updateOne(
+      { _id: id }, // Your query criteria
+      { profileImage: newBase64Image }
+    )
+      .then(() => {
+        res.status(200).json({ message: "Image updated successfully" });
+      })
+      .catch((error) => {
+        res.status(500).json({ message: "Something went wrong", error: error });
+      });
   },
 };

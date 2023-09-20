@@ -1,20 +1,64 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../context/AppContext.context';
 
 const NavBar = (props) => {
+  const { imgs, setImgs, resetState } = useAppContext();
+  console.log(imgs);
   // Destructuring Props
   const { user, setUser } = props;
   console.log(setUser);
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const logoutPopupRef = useRef(null);
   const navigate = useNavigate();
-
+  console.log(user);
   // i) Handlers
   const handleLogout = () => {
     logoutUser();
+    resetState();
+  };
+  const toBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
   };
 
+  const uploadImage = async () => {
+    const file = document.querySelector('#fileInput').files[0];
+    const url = `/api/users/${user._id}/updateImage`;
+    console.log('Sending PATCH request to:', url);
+
+    if (file) {
+      const base64Image = await toBase64(file);
+
+      console.log('Base64 Image:', base64Image);
+
+      // Update the endpoint here
+      fetch(`http://localhost:8080/api/users/${user._id}/updateImage`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+        body: JSON.stringify({ profileImage: base64Image }),
+      })
+        .then((response) => response.text())
+        .then((text) => {
+          // Check if text exists, parse it; otherwise, return an empty object
+          const data = text ? JSON.parse(text) : {};
+          console.log('Success:', data);
+
+          // Update the imgs state
+          setImgs(base64Image);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+  };
   // ii) API Calls
   const logoutUser = async () => {
     try {
@@ -45,8 +89,27 @@ const NavBar = (props) => {
     };
   }, []);
 
+  // Handle the div click by triggering the hidden file input click event
+  const handleDivClick = () => {
+    document.getElementById('fileInput').click();
+  };
+
+  // Handle file selection
+  const handleFileChange = () => {
+    uploadImage();
+  };
+  console.log(user);
+  console.log(user.profileImage);
   return (
     <div>
+      {/* Hidden File Input */}
+      <input
+        type="file"
+        id="fileInput"
+        style={{ display: 'none' }}
+        accept="image/*"
+        onChange={handleFileChange}
+      />
       <nav className="border-b-2 border-cyan-500 bg-cyan-300 py-5">
         <div className="container mx-auto">
           <div>
@@ -68,21 +131,27 @@ const NavBar = (props) => {
                   />
                 </Link>
               </li>
-              <li className="font-roundo text-lg font-bold text-slate-900 hover:font-bold hover:text-white">
+              <li className="font-roundo text-xl font-bold text-slate-900 hover:font-bold hover:text-white">
                 <Link to="/instructors" className="nav-link active">
                   Instructors
                 </Link>
               </li>
-              <li className="font-roundo text-lg font-bold text-slate-900 hover:font-bold hover:text-white">
+              <li className="font-roundo text-xl font-bold text-slate-900 hover:font-bold hover:text-white">
                 <Link to="/classroom" className="nav-link active">
                   Classroom
                 </Link>
               </li>
               <li style={{ position: 'relative' }}>
                 <button
-                  className="h-12 w-12 rounded-full border-4 border-white"
+                  className="h-16 w-16 rounded-full border-4 border-white"
                   onClick={() => setShowLogoutPopup(!showLogoutPopup)}
-                ></button>
+                >
+                  <img
+                    src={imgs || user.profileImage} // Use imgs state, fallback to user.profileImage
+                    alt="User Avatar"
+                    className="h-full w-full rounded-full object-cover"
+                  />
+                </button>
                 {showLogoutPopup && (
                   <div
                     ref={logoutPopupRef}
@@ -90,10 +159,20 @@ const NavBar = (props) => {
                     style={{ zIndex: 9999 }}
                   >
                     <p className="mb-2 text-center font-nunito font-bold">
-                      Hi, Pepito!{' '}
+                      Hi, {user.name}!{' '}
                     </p>
-                    <div className="mb-2 flex justify-center">
-                      <div className="h-14 w-14 rounded-full border-4 border-cyan-400"></div>
+                    <div
+                      id="imageDiv"
+                      className="mb-2 flex justify-center"
+                      onClick={handleDivClick}
+                    >
+                      <div className="h-14 w-14 rounded-full border-4 border-cyan-400">
+                        <img
+                          src={imgs || user.profileImage} // Use imgs state, fallback to user.profileImage
+                          alt="User Avatar"
+                          className="h-full w-full rounded-full object-cover"
+                        />
+                      </div>
                     </div>
 
                     <div className="grid grid-rows-2 ">
@@ -103,9 +182,6 @@ const NavBar = (props) => {
                       >
                         Logout
                       </button>
-                      <li>
-                        <h2>Welcome: {user.name}</h2>
-                      </li>
                       <button
                         className=" rounded-xl border-b-2 bg-cyan-400 p-2 font-nunito font-bold hover:bg-cyan-300"
                         onClick={() => setShowLogoutPopup(false)}

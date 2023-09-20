@@ -197,6 +197,7 @@ const InstructorBot = () => {
                     id="question"
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
+                    style={{ paddingLeft: '10px' }}
                   />
                   <button className="" type="submit" disabled={loading}>
                     {loading ? (

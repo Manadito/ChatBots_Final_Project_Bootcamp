@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../context/AppContext.context';
 
 import axios from 'axios';
 import _ from 'lodash';
@@ -8,9 +9,20 @@ const UserForm = (props) => {
   // --------------------------------------------------
   // I) HOOKS AND VARIABLES
   // --------------------------------------------------
-
+  const { imgs, setImgs } = useAppContext();
   // Destructuring props
   const { formType, setUser } = props;
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImgs(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   // State Hooks
   const [userCredentials, setUserCredentials] = useState({
@@ -18,9 +30,10 @@ const UserForm = (props) => {
     email: '',
     password: '',
     confirmPassword: '',
+    profileImage: '',
   });
   const [errorMessages, setErrorMessages] = useState({});
-
+  //const [imgs, setImgs] = useState();
   // React Route Hooks  -  Navigate
   const navigate = useNavigate();
 
@@ -53,24 +66,29 @@ const UserForm = (props) => {
   // ii) API Functions
   const registerUser = async () => {
     try {
-      // a) Send POST request to register user
+      // a) Actualiza el objeto userCredentials con la imagen en formato Base64
+      const updatedUserCredentials = {
+        ...userCredentials,
+        profileImage: imgs, // imgs contiene la imagen en formato Base64
+      };
+
+      // b) Envía la solicitud POST para registrar al usuario
       let res = await axios.post(
         'http://localhost:8080/api/users/register',
-        userCredentials,
-        // this will force the sending of the credentials / cookies so they can be updated
-        //    XMLHttpRequest from a different domain cannot set cookie values for their own domain
-        //    unless withCredentials is set to true before making the request
+        updatedUserCredentials, // Envía el objeto actualizado con la imagen
         { withCredentials: true },
       );
 
-      // b) Reset userCredentials state
+      // c) Reinicia el estado de userCredentials
       setUserCredentials({
         name: '',
         email: '',
         password: '',
         confirmPassword: '',
+        profileImage: '',
       });
-      // c) Login User
+
+      // d) Inicia sesión con el usuario registrado
       loginUser();
     } catch (err) {
       console.log('Error: ', err.response.data);
@@ -115,16 +133,37 @@ const UserForm = (props) => {
   // III) JSX
   // --------------------------------------------------
   return (
-    <div className="w-full max-w-xs">
+    <div className="flex w-screen justify-center">
       <form
         onSubmit={handleOnSubmitRegistration}
-        className="mb-4 rounded bg-white px-8 pb-8 pt-6 shadow-md"
+        className="rounded-xl border-2 border-cyan-400 bg-white px-8 pb-8 pt-6 shadow-md lg:w-3/12 xl:w-3/12 2xl:w-3/12"
       >
         {/* I) Name Field */}
         {formType === 'register' && (
           <div className="mb-4">
+            <div className="mb-4">
+              <label
+                className="mb-2 block text-sm font-bold text-gray-700"
+                htmlFor="profileImage"
+              >
+                Profile Image:
+              </label>
+              <input
+                type="file"
+                id="profileImage"
+                name="profileImage"
+                onChange={handleImageChange}
+                className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              />
+              {setImgs && (
+                <img src={imgs} alt="" style={{ maxWidth: '100px' }} />
+              )}
+              <div className="text-xs italic text-red-500">
+                {errorMessages?.profileImage}
+              </div>
+            </div>
             <label
-              className="mb-2 block text-sm font-bold text-gray-700"
+              className="mb-2 block text-lg font-bold text-gray-700"
               htmlFor="name"
             >
               Name:
@@ -147,7 +186,7 @@ const UserForm = (props) => {
         {/* II) Email Field */}
         <div className="mb-4">
           <label
-            className="mb-2 block text-sm font-bold text-gray-700"
+            className="mb-2 block text-lg font-bold text-gray-700"
             htmlFor="email"
           >
             Email:
@@ -169,7 +208,7 @@ const UserForm = (props) => {
         {/* III) Password Field */}
         <div className="mb-4">
           <label
-            className="mb-2 block text-sm font-bold text-gray-700"
+            className="mb-2 block text-lg font-bold text-gray-700"
             htmlFor="password"
           >
             Password:
@@ -195,7 +234,7 @@ const UserForm = (props) => {
         {formType === 'register' && (
           <div className="mb-4">
             <label
-              className="mb-2 block text-sm font-bold text-gray-700"
+              className="mb-2 block text-lg font-bold text-gray-700"
               htmlFor="confirmPassword"
             >
               Confirm Password:
@@ -219,7 +258,7 @@ const UserForm = (props) => {
         <div className="flex items-center justify-between">
           <button
             type="submit"
-            className="focus:shadow-outline rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700 focus:outline-none"
+            className="focus:shadow-outline rounded bg-cyan-400 px-4 py-2 font-bold text-white hover:bg-cyan-300 focus:outline-none"
           >
             {formType === 'register' ? (
               <span>Register</span>

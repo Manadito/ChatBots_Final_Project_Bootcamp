@@ -8,6 +8,7 @@ const {
   logout,
   findAllUsers,
   deleteAllUsers,
+  updateImage, // Import the new function
 } = require("../controllers/user.controller");
 
 // 3) Create Router Instance
@@ -19,6 +20,9 @@ UserRouter.post("/login", login);
 UserRouter.get("/logout", logout);
 UserRouter.get("/", findAllUsers);
 UserRouter.delete("/", deleteAllUsers);
+
+// Add this line for image updates
+UserRouter.patch("/:id/updateImage", updateImage);
 
 // 5) Exporting Router
 module.exports = UserRouter;

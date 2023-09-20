@@ -28,7 +28,7 @@ const LandingNav = () => {
               <li className="font-medium hover:font-bold">
                 <Link
                   to="/register"
-                  className="font-roundo text-lg font-bold text-slate-900 hover:font-bold hover:text-white"
+                  className="font-roundo text-xl font-bold text-slate-900 hover:font-bold hover:text-white"
                 >
                   Get started
                 </Link>

@@ -2,10 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 require("dotenv").config();
+const cookieParser = require("cookie-parser"); // Added just in case
 const OpenAI = require("openai");
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -74,6 +75,8 @@ app.post("/generate-text", async (req, res) => {
     res.status(500).json({ error: "An error occurred while generating text." });
   }
 });
+// Added just in case
+app.use(cookieParser());
 
 require("./config/mongoose.config"); // This calls the Mongoose Config file ... remember to have mongo running
 

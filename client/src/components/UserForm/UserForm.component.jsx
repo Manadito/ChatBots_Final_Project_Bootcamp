@@ -4,6 +4,7 @@ import { useAppContext } from '../../context/AppContext.context';
 
 import axios from 'axios';
 import _ from 'lodash';
+import { baseUrl } from '../config';
 
 const UserForm = (props) => {
   // --------------------------------------------------
@@ -74,7 +75,7 @@ const UserForm = (props) => {
 
       // b) Envía la solicitud POST para registrar al usuario
       let res = await axios.post(
-        'http://localhost:8080/api/users/register',
+        `${baseUrl}/api/users/register`,
         updatedUserCredentials, // Envía el objeto actualizado con la imagen
         { withCredentials: true },
       );
@@ -99,7 +100,7 @@ const UserForm = (props) => {
   const loginUser = async () => {
     try {
       let res = await axios.post(
-        'http://localhost:8080/api/users/login',
+        `${baseUrl}/api/users/login`,
         userCredentials,
         // this will force the sending of the credentials / cookies so they can be updated
         //    XMLHttpRequest from a different domain cannot set cookie values for their own domain

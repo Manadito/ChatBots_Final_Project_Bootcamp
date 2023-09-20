@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAppContext } from '../../context/AppContext.context';
+import { baseUrl } from '../config';
 
 const InstructorBot = () => {
   // State variables and props --------------------------------------------------------------------------
@@ -122,7 +123,7 @@ const InstructorBot = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const result = await axios.post('http://localhost:8080/generate-text', {
+      const result = await axios.post(`${baseUrl}/generate-text`, {
         prompt,
         type: instructor, // we specify the chatbot type here
       });

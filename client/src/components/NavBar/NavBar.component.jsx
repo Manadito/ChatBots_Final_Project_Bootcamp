@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext.context';
+import { baseUrl } from '../config';
 
 const NavBar = (props) => {
   const { imgs, setImgs, resetState } = useAppContext();
@@ -38,7 +39,7 @@ const NavBar = (props) => {
       console.log('Base64 Image:', base64Image);
 
       // Update the endpoint here
-      fetch(`http://localhost:8080/api/users/${user._id}/updateImage`, {
+      fetch(`${baseUrl}/${user._id}/updateImage`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json; charset=utf-8',
@@ -62,7 +63,7 @@ const NavBar = (props) => {
   // ii) API Calls
   const logoutUser = async () => {
     try {
-      await axios.get('http://localhost:8080/api/users/logout', {
+      await axios.get(`${baseUrl}/api/users/logout`, {
         withCredentials: true,
       });
       localStorage.removeItem('user');

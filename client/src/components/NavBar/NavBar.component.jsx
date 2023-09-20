@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppContext.context';
-import { baseUrl } from '../config';
+import { baseUrl } from '../../config';
 
 const NavBar = (props) => {
   const { imgs, setImgs, resetState } = useAppContext();

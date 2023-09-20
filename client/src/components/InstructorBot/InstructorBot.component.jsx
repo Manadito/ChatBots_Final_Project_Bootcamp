@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAppContext } from '../../context/AppContext.context';
-import { baseUrl } from '../config';
+import { baseUrl } from '../../config';
 
 const InstructorBot = () => {
   // State variables and props --------------------------------------------------------------------------

@@ -3,6 +3,6 @@ const environments = {
   production: '',
 };
 
-const baseURL = environments[process.env.NODE_ENV] || '';
+const baseUrl = environments[process.env.NODE_ENV] || '';
 
-export { baseURL };
+export { baseUrl };

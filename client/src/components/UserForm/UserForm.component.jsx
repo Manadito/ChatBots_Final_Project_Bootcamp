@@ -4,7 +4,7 @@ import { useAppContext } from '../../context/AppContext.context';
 
 import axios from 'axios';
 import _ from 'lodash';
-import { baseUrl } from '../config';
+import { baseUrl } from '../../config';
 
 const UserForm = (props) => {
   // --------------------------------------------------
